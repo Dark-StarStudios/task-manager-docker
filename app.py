@@ -1,5 +1,6 @@
 # Application
 import getpass
+from lib.crud import create_task, view_tasks, update_task, delete_task
 
 exit = False
 username = getpass.getuser()
@@ -17,21 +18,23 @@ while exit == False:
     input_choice = input("Please enter your choice (1-5): ")
     if input_choice == "1":
         task_name = input("Enter the task name: ")
-        # Here you would add code to save the task to JSON file
+        create_task(task_name)
         print(f"Task '{task_name}' created successfully!")
     elif  input_choice == "2":
-        # Here you would add code to read and display tasks from JSON file
-        print("Displaying all tasks...")
+        print("-----------------------------------------------------------------------")
+        view_tasks()
     elif input_choice == "3":
-        task_id = input("Enter the task ID to update: ")
+        view_tasks()
+        task_number = input("Enter the task ID to update: ")
         new_task_name = input("Enter the new task name: ")
-        # Here you would add code to update the task in JSON file
-        print(f"Task ID '{task_id}' updated successfully to '{new_task_name}'!")
+        update_task(int(task_number), new_task_name)
+        print(f"Task'{task_number}' updated successfully to '{new_task_name}'!")
     elif input_choice == "4":
-        task_id = input("Enter the task ID to delete: ")
-        # Here you would add code to delete the task from JSON file
-        print(f"Task ID '{task_id}' deleted successfully!")
+        task_number = input("Enter the task ID to delete: ")
+        delete_task(int(task_number))
+        print(f"Task ID '{task_number}' deleted successfully!")
     else:
         print("Exiting the application. Goodbye!")
         exit = exit = True
+    print("-----------------------------------------------------------------------")
 
