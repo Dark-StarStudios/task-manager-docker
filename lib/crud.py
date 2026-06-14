@@ -25,7 +25,8 @@ def view_tasks():
         return
 
     for i, task in enumerate(tasks):
-        print(f"id:({i}) {task['title']} {'✓' if task['completed'] else '✗'}")
+        status = f"\033[32m✓\033[0m" if task["completed"] else f"\033[31m✗\033[0m"
+        print(f"id:({i}) {task['title']} {status}")
 
 def update_task(task_number, new_task_name):
     tasks = work_with_json_file("data/tasks.json", mode="r")
