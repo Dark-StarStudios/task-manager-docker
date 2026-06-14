@@ -2,63 +2,62 @@
 from lib.json import work_with_json_file
 import uuid
 
+class Task:
+    list = work_with_json_file("data/tasks.json", mode="r")
 
-def create_task(task_name):
-    tasks = work_with_json_file("data/tasks.json", mode="r")
-    uuid4 = uuid.uuid4()
+    def validate_task_number(task_number):
+        if task_number < 0 or task_number >= len(Task.list):
+            print("\033[31mInvalid task ID.\033[0m")
+            return False
+        return True
 
-    new_task = {
-        "id": str(uuid4),
-        "title": task_name,
-        "completed": False
-    }
+    def create_task(task_name):
+        
+        uuid4 = uuid.uuid4()
 
-    tasks.append(new_task)
+        new_task = {
+            "id": str(uuid4),
+            "title": task_name,
+            "completed": False
+        }
 
-    work_with_json_file("data/tasks.json", data=tasks, mode="w")
+        Task.list.append(new_task)
 
-def view_tasks():
-    tasks = work_with_json_file("data/tasks.json", mode="r")
+        work_with_json_file("data/tasks.json", data=Task.list, mode="w")
 
-    if not tasks:
-        print("No tasks found. Create a new task to get started!")
-        return
+    def view_tasks():
 
-    for i, task in enumerate(tasks):
-        status = f"\033[32m✓\033[0m" if task["completed"] else f"\033[31m✗\033[0m"
-        print(f"id:({i}) {task['title']} {status}")
+        if not Task.list:
+            print("\033[31mNo tasks found.\033[0m \033[32mCreate a new task to get started!\033[0m")
+            return
 
-def update_task(task_number, new_task_name):
-    tasks = work_with_json_file("data/tasks.json", mode="r")
+        for i, task in enumerate(Task.list):
+            status = f"\033[32m✓\033[0m" if task["completed"] else f"\033[31m✗\033[0m"
+            print(f"id:({i}) {task['title']} {status}")
 
-    if task_number < 0 or task_number >= len(tasks):
-        print("Invalid task ID.")
-        return
+    def update_task(task_number, new_task_name):
+
+        if not Task.validate_task_number(task_number): return
 
 
-    tasks[task_number]["title"] = new_task_name
+        Task.list[task_number]["title"] = new_task_name
 
-    work_with_json_file("data/tasks.json", data=tasks, mode="w")
+        work_with_json_file("data/tasks.json", data=Task.list, mode="w")
 
-def complete_task(task_number):
-    tasks = work_with_json_file("data/tasks.json", mode="r")
+    def complete_task(task_number):
 
-    if task_number < 0 or task_number >= len(tasks):
-        print("Invalid task ID.")
-        return
+        if not Task.validate_task_number(task_number): return
 
-    tasks[task_number]["completed"] = not tasks[task_number]["completed"]
-    print(f"{tasks[task_number]['title']} is {'completed' if tasks[task_number]['completed'] else 'not completed'}")
+        Task.list[task_number]["completed"] = not Task.list[task_number]["completed"]
+        print(f"{Task.list[task_number]['title']} is {'completed' if Task.list[task_number]['completed'] else 'not completed'}")
 
-    work_with_json_file("data/tasks.json", data=tasks, mode="w")
+        work_with_json_file("data/tasks.json", data=Task.list, mode="w")
 
-def delete_task(task_id):
-    tasks = work_with_json_file("data/tasks.json", mode="r")
+    def delete_task(task_number):
 
-    if task_id < 0 or task_id >= len(tasks):
-        print("Invalid task ID.")
-        return
+        if not Task.validate_task_number(task_number): return
 
-    del tasks[task_id]
+        del Task.list[task_number]
 
-    work_with_json_file("data/tasks.json", data=tasks, mode="w")
+        work_with_json_file("data/tasks.json", data=Task.list, mode="w")
+        print(f"Task ID '{task_number}' deleted successfully!")
