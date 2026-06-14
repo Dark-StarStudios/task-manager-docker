@@ -1,6 +1,6 @@
 # Application
 import getpass
-from lib.crud import create_task, view_tasks, update_task, delete_task
+from lib.crud import create_task, view_tasks, complete_task, delete_task
 
 exit = False
 username = getpass.getuser()
@@ -26,10 +26,7 @@ while exit == False:
     elif input_choice == "3":
         view_tasks()
         task_number = input("Enter the task ID to complete: ")
-        # new_task_name = input("Enter the new task name: ")
-        new_task_name = None
-        update_task(int(task_number), new_task_name, True)
-        print(f"Task'{task_number}' updated successfully to '{new_task_name}'!")
+        complete_task(int(task_number))
     elif input_choice == "4":
         task_number = input("Enter the task ID to delete: ")
         delete_task(int(task_number))
