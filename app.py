@@ -9,10 +9,10 @@ print("Welcome to the Task Manager Application!")
 
 
 while exit == False:
-    print("1. Create a new task")
-    print("2. View all tasks")
-    print("3. Update a task")
-    print("4. Delete a task")
+    print("1. Add task")
+    print("2. List tasks")
+    print("3. Complete task")
+    print("4. Delete task")
     print("5. Exit")
 
     input_choice = input("Please enter your choice (1-5): ")
@@ -25,9 +25,10 @@ while exit == False:
         view_tasks()
     elif input_choice == "3":
         view_tasks()
-        task_number = input("Enter the task ID to update: ")
-        new_task_name = input("Enter the new task name: ")
-        update_task(int(task_number), new_task_name)
+        task_number = input("Enter the task ID to complete: ")
+        # new_task_name = input("Enter the new task name: ")
+        new_task_name = None
+        update_task(int(task_number), new_task_name, True)
         print(f"Task'{task_number}' updated successfully to '{new_task_name}'!")
     elif input_choice == "4":
         task_number = input("Enter the task ID to delete: ")
