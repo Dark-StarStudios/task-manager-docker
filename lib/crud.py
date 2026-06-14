@@ -25,18 +25,29 @@ def view_tasks():
         return
 
     for i, task in enumerate(tasks):
-        print(f"id:({i}) {task['title']}")
+        print(f"id:({i}) {task['title']} {'✓' if task['completed'] else '✗'}")
 
-def update_task(task_number, new_task_name, is_completed=False):
+def update_task(task_number, new_task_name):
     tasks = work_with_json_file("data/tasks.json", mode="r")
 
     if task_number < 0 or task_number >= len(tasks):
         print("Invalid task ID.")
         return
 
-    if new_task_name:
-        tasks[task_number]["title"] = new_task_name
-    tasks[task_number]["completed"] = is_completed
+
+    tasks[task_number]["title"] = new_task_name
+
+    work_with_json_file("data/tasks.json", data=tasks, mode="w")
+
+def complete_task(task_number):
+    tasks = work_with_json_file("data/tasks.json", mode="r")
+
+    if task_number < 0 or task_number >= len(tasks):
+        print("Invalid task ID.")
+        return
+
+    tasks[task_number]["completed"] = not tasks[task_number]["completed"]
+    print(f"{tasks[task_number]['title']} is {'completed' if tasks[task_number]['completed'] else 'not completed'}")
 
     work_with_json_file("data/tasks.json", data=tasks, mode="w")
 
